@@ -48,4 +48,11 @@ class DYWallGenerator: SKSpriteNode {
         }
     }
     
+    func destroyWalls() {
+        for wall in walls{
+            if wall.position.x < -size.width/2 {
+                wall.removeFromParent()
+            }
+        }
+    }
 }

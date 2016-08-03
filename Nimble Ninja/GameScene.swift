@@ -129,10 +129,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         movingGround.stop()
         hero.stop()
         
-        //Try to fix the bug
-        wallGenerator.stopGenerating()
-        currentLevel = 0
-        
         // create game over label
         let gameOverLabel = SKLabelNode(text: "Game Over!")
         gameOverLabel.fontColor = UIColor.blackColor()
@@ -165,6 +161,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         view!.presentScene(newScene)
     }
     
+    func pauseGame()
+    {
+        scene!.view!.paused = true
+    }
     
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
         if isGameOver {
@@ -179,7 +179,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     override func update(currentTime: CFTimeInterval) {
         
-        if wallGenerator.wallTrackers.count > 0 {
+        if wallGenerator.wallTrackers.count > 0 && !isGameOver{
             
             let wall = wallGenerator.wallTrackers[0] as DYWall
             
@@ -191,19 +191,24 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 pointsLabel.increment()
                 
                 if pointsLabel.number % kNumberOfPointsPerLevel == 0 {
-                    if currentLevel == kLevelGenerationTimes.count-1 {
-                        currentLevel = kLevelGenerationTimes.count-1
-                    }
-                    else {
-                        currentLevel+=1
-                    }
+                    currentLevel+=1
                     wallGenerator.stopGenerating()
-                    wallGenerator.startGeneratingWallsEvery(kLevelGenerationTimes[currentLevel])
+                    wallGenerator.startGeneratingWallsEvery(kLevelGenerationTimes[accelaritionOfWall()])
                 }
                 
             }
+            //wallGenerator.destroyWalls()
         }
         
+    }
+    
+    func accelaritionOfWall()->Int{
+        if currentLevel < 4 {
+            return currentLevel
+        }
+        else {
+            return 4
+        }
     }
     
     // MARK: - SKPhysicsContactDelegate
