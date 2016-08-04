@@ -24,6 +24,7 @@
 		09D4A99C1D4FB4B20015ACD4 /* DYWall.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09D4A99B1D4FB4B20015ACD4 /* DYWall.swift */; };
 		09D4A99E1D4FB4DD0015ACD4 /* DYPointsLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09D4A99D1D4FB4DD0015ACD4 /* DYPointsLabel.swift */; };
 		09D4A9A01D4FB5C80015ACD4 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09D4A99F1D4FB5C80015ACD4 /* Constants.swift */; };
+		2336A6501D53146C0090EF56 /* DYSettingNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2336A64F1D53146C0090EF56 /* DYSettingNode.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -67,6 +68,7 @@
 		09D4A99B1D4FB4B20015ACD4 /* DYWall.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DYWall.swift; sourceTree = "<group>"; };
 		09D4A99D1D4FB4DD0015ACD4 /* DYPointsLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DYPointsLabel.swift; sourceTree = "<group>"; };
 		09D4A99F1D4FB5C80015ACD4 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		2336A64F1D53146C0090EF56 /* DYSettingNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DYSettingNode.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -133,6 +135,7 @@
 				09D4A9931D4FA8010015ACD4 /* DYHero.swift */,
 				09D4A99F1D4FB5C80015ACD4 /* Constants.swift */,
 				09D4A9951D4FB37F0015ACD4 /* DYCloud.swift */,
+				2336A64F1D53146C0090EF56 /* DYSettingNode.swift */,
 			);
 			path = "Nimble Ninja";
 			sourceTree = "<group>";
@@ -310,6 +313,7 @@
 				09D4A9981D4FB3C70015ACD4 /* DYCloudGenerator.swift in Sources */,
 				09D4A9661D4F9E550015ACD4 /* GameViewController.swift in Sources */,
 				09D4A9941D4FA8010015ACD4 /* DYHero.swift in Sources */,
+				2336A6501D53146C0090EF56 /* DYSettingNode.swift in Sources */,
 				09D4A99C1D4FB4B20015ACD4 /* DYWall.swift in Sources */,
 				09D4A99A1D4FB4670015ACD4 /* DYWallGenerator.swift in Sources */,
 				09D4A9601D4F9E550015ACD4 /* AppDelegate.swift in Sources */,

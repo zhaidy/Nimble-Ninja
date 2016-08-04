@@ -11,6 +11,9 @@ import SpriteKit
 
 class GameScene: SKScene, SKPhysicsContactDelegate {
     
+    var gameLayer = SKNode()
+    var settingLayer = SKNode()
+    
     var movingGround: DYMovingGround!
     var hero: DYHero!
     var cloudGenerator: DYCloudGenerator!
@@ -18,8 +21,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     var isStarted = false
     var isGameOver = false
+    var isGamePaused = false
     
     var currentLevel = 0
+    
+    var settingButton: SKSpriteNode!
+    var playButton: SKSpriteNode!
+    var settingNode: SKSpriteNode!
     
     override func didMoveToView(view: SKView) {
         backgroundColor = UIColor(red: 159.0/255.0, green: 201.0/255.0, blue: 244.0/255.0, alpha: 1.0)
@@ -32,26 +40,55 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         addPointsLabels()
         addPhysicsWorld()
         loadHighscore()
+        addSettingButton()
         
+        self.addChild(gameLayer)
+        self.addChild(settingLayer)
+        
+    }
+    
+    func addSettingButton(){
+        settingButton = SKSpriteNode(imageNamed: "setting")
+        settingButton.name = "setting"
+        settingButton.position = CGPointMake(20, 20)
+        settingButton.xScale = 0.2
+        settingButton.yScale = 0.2
+        gameLayer.addChild(settingButton)
+    }
+    
+    func addPlayButton(){
+        playButton = SKSpriteNode(imageNamed: "play")
+        playButton.name = "play"
+        playButton.position = CGPointMake(view!.frame.size.width*0.5, view!.frame.size.height/2)
+        playButton.xScale = 0.5
+        playButton.yScale = 0.5
+        settingLayer.addChild(playButton)
+    }
+    
+    func addSettingNode(){
+        let size = CGSizeMake(view!.frame.size.width*0.6, view!.frame.size.height/2)
+        settingNode = DYSettingNode(size: size, position: CGPointMake(view!.frame.size.width*0.5, view!.frame.size.height/2))
+        settingLayer.addChild(settingNode)
+        addPlayButton()
     }
     
     func addMovingGround() {
         movingGround = DYMovingGround(size: CGSizeMake(view!.frame.width, kDYGroundHeight))
         movingGround.position = CGPointMake(0, view!.frame.size.height/2)
-        addChild(movingGround)
+        gameLayer.addChild(movingGround)
     }
     
     func addHero() {
         hero = DYHero()
         hero.position = CGPointMake(70, movingGround.position.y + movingGround.frame.size.height/2 + hero.frame.size.height/2)
-        addChild(hero)
+        gameLayer.addChild(hero)
         hero.breathe()
     }
     
     func addCloudGenerator() {
         cloudGenerator = DYCloudGenerator(color: UIColor.clearColor(), size: view!.frame.size)
         cloudGenerator.position = view!.center
-        addChild(cloudGenerator)
+        gameLayer.addChild(cloudGenerator)
         cloudGenerator.populate(7)
         cloudGenerator.startGeneratingWithSpawnTime(5)
     }
@@ -59,7 +96,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     func addWallGenerator() {
         wallGenerator = DYWallGenerator(color: UIColor.clearColor(), size: view!.frame.size)
         wallGenerator.position = view!.center
-        addChild(wallGenerator)
+        gameLayer.addChild(wallGenerator)
     }
     
     func addTapToStartLabel() {
@@ -70,7 +107,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         tapToStartLabel.fontName = "Helvetica"
         tapToStartLabel.fontColor = UIColor.blackColor()
         tapToStartLabel.fontSize = 22.0
-        addChild(tapToStartLabel)
+        gameLayer.addChild(tapToStartLabel)
         tapToStartLabel.runAction(blinkAnimation())
     }
     
@@ -78,12 +115,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         let pointsLabel = DYPointsLabel(num: 0)
         pointsLabel.position = CGPointMake(20.0, view!.frame.size.height - 35)
         pointsLabel.name = "pointsLabel"
-        addChild(pointsLabel)
+        gameLayer.addChild(pointsLabel)
         
         let highscoreLabel = DYPointsLabel(num: 0)
         highscoreLabel.name = "highscoreLabel"
         highscoreLabel.position = CGPointMake(view!.frame.size.width - 20, view!.frame.size.height - 35)
-        addChild(highscoreLabel)
+        gameLayer.addChild(highscoreLabel)
         
         let highscoreTextLabel = SKLabelNode(text: "High")
         highscoreTextLabel.fontColor = UIColor.blackColor()
@@ -100,7 +137,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     func loadHighscore() {
         let defaults = NSUserDefaults.standardUserDefaults()
         
-        let highscoreLabel = childNodeWithName("highscoreLabel") as! DYPointsLabel
+        let highscoreLabel = gameLayer.childNodeWithName("highscoreLabel") as! DYPointsLabel
         highscoreLabel.setTo(defaults.integerForKey("highscore"))
     }
     
@@ -108,7 +145,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     func start() {
         isStarted = true
         
-        let tapToStartLabel = childNodeWithName("tapToStartLabel")
+        let tapToStartLabel = gameLayer.childNodeWithName("tapToStartLabel")
         tapToStartLabel?.removeFromParent()
         
         hero.stop()
@@ -136,13 +173,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         gameOverLabel.position.x = view!.center.x
         gameOverLabel.position.y = view!.center.y + 40
         gameOverLabel.fontSize = 22.0
-        addChild(gameOverLabel)
+        gameLayer.addChild(gameOverLabel)
         gameOverLabel.runAction(blinkAnimation())
         
         
         // save current points label value
-        let pointsLabel = childNodeWithName("pointsLabel") as! DYPointsLabel
-        let highscoreLabel = childNodeWithName("highscoreLabel") as! DYPointsLabel
+        let pointsLabel = gameLayer.childNodeWithName("pointsLabel") as! DYPointsLabel
+        let highscoreLabel = gameLayer.childNodeWithName("highscoreLabel") as! DYPointsLabel
         
         if highscoreLabel.number < pointsLabel.number {
             highscoreLabel.setTo(pointsLabel.number)
@@ -161,12 +198,34 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         view!.presentScene(newScene)
     }
     
-    func pauseGame()
-    {
-        scene!.view!.paused = true
+    func pauseGame() {
+        gameLayer.paused = true
+        isGamePaused = true
+        addSettingNode()
+        wallGenerator.stopGenerating()
+    }
+    
+    func resumeGame() {
+        gameLayer.paused = false
+        isGamePaused = false
+        playButton.removeFromParent()
+        settingNode.removeFromParent()
+        wallGenerator.startGeneratingWallsEvery(kLevelGenerationTimes[accelaritionOfWall()])
     }
     
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
+        for touch in touches {
+            let locationG = touch.locationInNode(gameLayer)
+            let locationS = touch.locationInNode(settingLayer)
+            //this will detect touch on setting button
+            if gameLayer.nodeAtPoint(locationG) == gameLayer.childNodeWithName("setting") {
+                pauseGame()
+            }
+            if settingLayer.nodeAtPoint(locationS) == settingLayer.childNodeWithName("play"){
+                resumeGame()
+            }
+        }
+        
         if isGameOver {
             restart()
         } else if !isStarted {
@@ -179,15 +238,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     override func update(currentTime: CFTimeInterval) {
         
-        if wallGenerator.wallTrackers.count > 0 && !isGameOver{
+        if wallGenerator.wallTrackers.count > 0 && !isGameOver && !isGamePaused{
             
             let wall = wallGenerator.wallTrackers[0] as DYWall
-            
             let wallLocation = wallGenerator.convertPoint(wall.position, toNode: self)
             if wallLocation.x < hero.position.x {
                 wallGenerator.wallTrackers.removeAtIndex(0)
                 
-                let pointsLabel = childNodeWithName("pointsLabel") as! DYPointsLabel
+                let pointsLabel = gameLayer.childNodeWithName("pointsLabel") as! DYPointsLabel
                 pointsLabel.increment()
                 
                 if pointsLabel.number % kNumberOfPointsPerLevel == 0 {
@@ -197,8 +255,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 }
                 
             }
-            //wallGenerator.destroyWalls()
         }
+//        if isGamePaused {
+//            wallGenerator.stopWalls()
+//        }
         
     }
     
