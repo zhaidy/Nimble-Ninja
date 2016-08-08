@@ -28,6 +28,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var settingButton: SKSpriteNode!
     var playButton: SKSpriteNode!
     var settingNode: SKSpriteNode!
+    var countDownLabel: SKLabelNode!
     
     override func didMoveToView(view: SKView) {
         backgroundColor = UIColor(red: 159.0/255.0, green: 201.0/255.0, blue: 244.0/255.0, alpha: 1.0)
@@ -40,19 +41,20 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         addPointsLabels()
         addPhysicsWorld()
         loadHighscore()
-        addSettingButton()
+        //addSettingButton()
         
         self.addChild(gameLayer)
+        settingLayer.zPosition = 100
         self.addChild(settingLayer)
         
     }
     
     func addSettingButton(){
-        settingButton = SKSpriteNode(imageNamed: "setting")
+        settingButton = SKSpriteNode(imageNamed: "pause")
         settingButton.name = "setting"
         settingButton.position = CGPointMake(20, 20)
-        settingButton.xScale = 0.2
-        settingButton.yScale = 0.2
+        settingButton.xScale = 0.05
+        settingButton.yScale = 0.05
         gameLayer.addChild(settingButton)
     }
     
@@ -213,6 +215,20 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         wallGenerator.startGeneratingWallsEvery(kLevelGenerationTimes[accelaritionOfWall()])
     }
     
+    func addCountDownLabel() {
+        setCountDown("3")
+        countDownLabel.fontColor = UIColor.blackColor()
+        countDownLabel.fontName = "Helvetica"
+        countDownLabel.position.x = view!.center.x
+        countDownLabel.position.y = view!.center.y + 40
+        countDownLabel.fontSize = 22.0
+        settingLayer.addChild(countDownLabel)
+    }
+    
+    func setCountDown(num: String) {
+        countDownLabel = SKLabelNode(text: num)
+    }
+    
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
         for touch in touches {
             let locationG = touch.locationInNode(gameLayer)
@@ -223,6 +239,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             }
             if settingLayer.nodeAtPoint(locationS) == settingLayer.childNodeWithName("play"){
                 resumeGame()
+//                addCountDownLabel()
+//                let countTime = (Int64(NSEC_PER_SEC) * 3)
+//                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, countTime), dispatch_get_main_queue(), { () -> Void in
+//                    self.resumeGame()
+//                })
             }
         }
         
@@ -256,9 +277,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 
             }
         }
-//        if isGamePaused {
-//            wallGenerator.stopWalls()
-//        }
         
     }
     
