@@ -25,6 +25,7 @@
 		09D4A99E1D4FB4DD0015ACD4 /* DYPointsLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09D4A99D1D4FB4DD0015ACD4 /* DYPointsLabel.swift */; };
 		09D4A9A01D4FB5C80015ACD4 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09D4A99F1D4FB5C80015ACD4 /* Constants.swift */; };
 		2336A6501D53146C0090EF56 /* DYSettingNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2336A64F1D53146C0090EF56 /* DYSettingNode.swift */; };
+		23C7766D1D5861EC00382CCD /* GameKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 23C7766C1D5861EC00382CCD /* GameKit.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -69,6 +70,7 @@
 		09D4A99D1D4FB4DD0015ACD4 /* DYPointsLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DYPointsLabel.swift; sourceTree = "<group>"; };
 		09D4A99F1D4FB5C80015ACD4 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		2336A64F1D53146C0090EF56 /* DYSettingNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DYSettingNode.swift; sourceTree = "<group>"; };
+		23C7766C1D5861EC00382CCD /* GameKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GameKit.framework; path = System/Library/Frameworks/GameKit.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -76,6 +78,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				23C7766D1D5861EC00382CCD /* GameKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -99,6 +102,7 @@
 		09D4A9531D4F9E550015ACD4 = {
 			isa = PBXGroup;
 			children = (
+				23C7766C1D5861EC00382CCD /* GameKit.framework */,
 				09D4A95E1D4F9E550015ACD4 /* Nimble Ninja */,
 				09D4A9771D4F9E550015ACD4 /* Nimble NinjaTests */,
 				09D4A9821D4F9E550015ACD4 /* Nimble NinjaUITests */,
@@ -228,6 +232,11 @@
 					09D4A95B1D4F9E550015ACD4 = {
 						CreatedOnToolsVersion = 7.3.1;
 						DevelopmentTeam = 8T553FK4FD;
+						SystemCapabilities = {
+							com.apple.GameCenter = {
+								enabled = 1;
+							};
+						};
 					};
 					09D4A9731D4F9E550015ACD4 = {
 						CreatedOnToolsVersion = 7.3.1;

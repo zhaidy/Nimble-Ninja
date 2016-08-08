@@ -41,13 +41,18 @@ class DYMovingGround: SKSpriteNode {
     
     
     func start() {
-        let adjustedDuration = NSTimeInterval(frame.size.width / kDefaultXToMovePerSecond)
-        
-        let moveLeft = SKAction.moveByX(-frame.size.width/2, y: 0, duration: adjustedDuration/2)
-        let resetPosition = SKAction.moveToX(0, duration: 0)
-        let moveSequence = SKAction.sequence([moveLeft, resetPosition])
-        
-        runAction(SKAction.repeatActionForever(moveSequence))
+        if !self.paused {
+            let adjustedDuration = NSTimeInterval(frame.size.width / kDefaultXToMovePerSecond)
+            
+            let moveLeft = SKAction.moveByX(-frame.size.width/2, y: 0, duration: adjustedDuration/2)
+            let resetPosition = SKAction.moveToX(0, duration: 0)
+            let moveSequence = SKAction.sequence([moveLeft, resetPosition])
+            
+            runAction(SKAction.repeatActionForever(moveSequence))
+        }
+        else {
+            
+        }
     }
     
     func stop() {

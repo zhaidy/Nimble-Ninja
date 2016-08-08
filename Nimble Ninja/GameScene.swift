@@ -8,6 +8,7 @@
 
 
 import SpriteKit
+import GameKit
 
 class GameScene: SKScene, SKPhysicsContactDelegate {
     
@@ -30,6 +31,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var settingNode: SKSpriteNode!
     var countDownLabel: SKLabelNode!
     
+    
     override func didMoveToView(view: SKView) {
         backgroundColor = UIColor(red: 159.0/255.0, green: 201.0/255.0, blue: 244.0/255.0, alpha: 1.0)
         
@@ -47,7 +49,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         settingLayer.zPosition = 100
         self.addChild(settingLayer)
         
+        
     }
+    
+    
     
     func addSettingButton(){
         settingButton = SKSpriteNode(imageNamed: "pause")
@@ -155,6 +160,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         movingGround.start()
         
         wallGenerator.startGeneratingWallsEvery(1)
+        
     }
     
     func gameOver() {
@@ -188,6 +194,18 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             
             let defaults = NSUserDefaults.standardUserDefaults()
             defaults.setInteger(highscoreLabel.number, forKey: "highscore")
+        }
+    }
+    
+    func saveHighScore(score: Int) {
+        if GKLocalPlayer.localPlayer().authenticated {
+            let scoreReporter = GKScore(leaderboardIdentifier: "nimbleninjaLB")
+            scoreReporter.value = Int64(score)
+            
+            let scoreArray : [GKScore] = [scoreReporter]
+            
+            GKScore.reportScores(scoreArray, withCompletionHandler: nil)
+            
         }
     }
     
@@ -258,26 +276,22 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     override func update(currentTime: CFTimeInterval) {
-        
-        if wallGenerator.wallTrackers.count > 0 && !isGameOver && !isGamePaused{
-            
-            let wall = wallGenerator.wallTrackers[0] as DYWall
-            let wallLocation = wallGenerator.convertPoint(wall.position, toNode: self)
-            if wallLocation.x < hero.position.x {
-                wallGenerator.wallTrackers.removeAtIndex(0)
-                
-                let pointsLabel = gameLayer.childNodeWithName("pointsLabel") as! DYPointsLabel
-                pointsLabel.increment()
-                
-                if pointsLabel.number % kNumberOfPointsPerLevel == 0 {
-                    currentLevel+=1
-                    wallGenerator.stopGenerating()
-                    wallGenerator.startGeneratingWallsEvery(kLevelGenerationTimes[accelaritionOfWall()])
+        if wallGenerator.wallTrackers.count > 0 && !isGameOver {
+                let wall = wallGenerator.wallTrackers[0] as DYWall
+                let wallLocation = wallGenerator.convertPoint(wall.position, toNode: self)
+                if wallLocation.x < hero.position.x {
+                    wallGenerator.wallTrackers.removeAtIndex(0)
+                    
+                    let pointsLabel = gameLayer.childNodeWithName("pointsLabel") as! DYPointsLabel
+                    pointsLabel.increment()
+                    
+                    if pointsLabel.number % kNumberOfPointsPerLevel == 0 {
+                        currentLevel+=1
+                        wallGenerator.stopGenerating()
+                        wallGenerator.startGeneratingWallsEvery(kLevelGenerationTimes[accelaritionOfWall()])
+                    }
                 }
-                
-            }
         }
-        
     }
     
     func accelaritionOfWall()->Int{

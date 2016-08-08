@@ -25,20 +25,25 @@ class DYWallGenerator: SKSpriteNode {
     }
     
     func generateWall() {
-        var scale: CGFloat
-        let rand = arc4random_uniform(2)
-        if rand == 0 {
-            scale = -1.0
-        } else {
-            scale = 1.0
+        if !self.paused {
+            var scale: CGFloat
+            let rand = arc4random_uniform(2)
+            if rand == 0 {
+                scale = -1.0
+            } else {
+                scale = 1.0
+            }
+            
+            let wall = DYWall()
+            wall.position.x = size.width/2 + wall.size.width/2
+            wall.position.y = scale * (kDYGroundHeight/2 + wall.size.height/2)
+            walls.append(wall)
+            wallTrackers.append(wall)
+            addChild(wall)
         }
-        
-        let wall = DYWall()
-        wall.position.x = size.width/2 + wall.size.width/2
-        wall.position.y = scale * (kDYGroundHeight/2 + wall.size.height/2)
-        walls.append(wall)
-        wallTrackers.append(wall)
-        addChild(wall)
+        else {
+            
+        }
     }
     
     func stopWalls() {
